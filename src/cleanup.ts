@@ -59,7 +59,7 @@ async function cleanProfileTarget(profileDir: string, packages: Packages, checkT
   await rmExcept(profileDir, keepProfile);
 
   let keepPkg = new Set(packages.flatMap((p) => [p.name, ...p.targets.map((t) => t.replace(/-/g, "_"))]));
-  keepPkg.add("rsr");
+  core.info(`keepPkg = ${[...keepPkg]}`);
   await rmExcept(path.join(profileDir, "build"), keepPkg, checkTimestamp);
   await rmExcept(path.join(profileDir, ".fingerprint"), keepPkg, checkTimestamp);
 

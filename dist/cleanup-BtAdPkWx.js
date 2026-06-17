@@ -34120,10 +34120,10 @@ async function getCacheProvider() {
     let cache;
     switch (cacheProvider) {
         case "github":
-            cache = await import('./cache-Cb-Up9r2.js');
+            cache = await import('./cache-gi3y7QnK.js');
             break;
         case "warpbuild":
-            cache = await import('./cache-1jS6aShy.js').then(function (n) { return n.c; });
+            cache = await import('./cache-BQyVbNcz.js').then(function (n) { return n.c; });
             break;
         default:
             throw new Error(`The \`cache-provider\` \`${cacheProvider}\` is not valid.`);
@@ -34364,7 +34364,7 @@ class CacheConfig {
                             continue;
                         }
                         // Package without `[[package]].source` and `[[package]].checksum`
-                        // are the one with `path = "..."` to crates within the workspace.
+                        // Packages with `[[package]].path` are the one with `path = "..."` to crates within the workspace.
                         const packages = parsed.package.filter((p) => "source" in p || "checksum" in p);
                         hasher.update(JSON.stringify(packages));
                         parsedKeyFiles.push(cargo_lock);
@@ -34611,7 +34611,8 @@ async function cleanProfileTarget(profileDir, packages, checkTimestamp = false) 
     }
     let keepProfile = new Set(["build", ".fingerprint", "deps"]);
     await rmExcept(profileDir, keepProfile);
-    const keepPkg = new Set(packages.flatMap((p) => [p.name, ...p.targets.map((t) => t.replace(/-/g, "_"))]));
+    let keepPkg = new Set(packages.flatMap((p) => [p.name, ...p.targets.map((t) => t.replace(/-/g, "_"))]));
+    info(`keepPkg = ${[...keepPkg]}`);
     await rmExcept(path__default.join(profileDir, "build"), keepPkg, checkTimestamp);
     await rmExcept(path__default.join(profileDir, ".fingerprint"), keepPkg, checkTimestamp);
     const keepDeps = new Set(packages.flatMap((p) => {
